@@ -1,0 +1,888 @@
+% Copyright 2007 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+%% Adapted from:
+\ProvidesPackageRCS $Header: /Users/joseph/Documents/LaTeX/beamer/base/themes/inner/beamerinnerthemeNRLpresentation.sty,v 67c48b3b652d 2012/05/01 07:25:30 joseph $
+
+% Modified by Peter Mignerey (pcm) code 7167, July 2016 -- January 2017
+
+% don't mess with modes
+\mode<presentation>
+
+% Some images:
+
+\pgfdeclareimage[width=14pt,height=12pt]{beamericonbook}{beamericonbook}
+\pgfdeclareimage[width=14pt,height=12pt]{beamericonbookshaded}{beamericonbook.20}
+\pgfaliasimage{beamericonbook.!20opaque}{beamericonbookshaded}
+\pgfaliasimage{beamericonbook.!15opaque}{beamericonbookshaded}
+\pgfaliasimage{beamericonbook.!10opaque}{beamericonbookshaded}
+\pgfaliasimage{beamericonbook.!5opaque}{beamericonbookshaded}
+\pgfaliasimage{beamericonbook.!2opaque}{beamericonbookshaded}
+\pgfdeclareimage[width=11pt,height=14pt]{beamericonarticle}{beamericonarticle}
+\pgfdeclareimage[width=11pt,height=14pt]{beamericonarticleshaded}{beamericonarticle.20}
+\pgfaliasimage{beamericonarticle.!20opaque}{beamericonarticleshaded}
+\pgfaliasimage{beamericonarticle.!15opaque}{beamericonarticleshaded}
+\pgfaliasimage{beamericonarticle.!10opaque}{beamericonarticleshaded}
+\pgfaliasimage{beamericonarticle.!5opaque}{beamericonarticleshaded}
+\pgfaliasimage{beamericonarticle.!2opaque}{beamericonarticleshaded}
+\pgfdeclareimage[width=14pt,height=14pt]{beamericononline}{beamericononline}
+\pgfdeclareimage[width=14pt,height=14pt]{beamericononlineshaded}{beamericononline.20}
+\pgfaliasimage{beamericonbook.!20opaque}{beamericononlineshaded}
+\pgfaliasimage{beamericonbook.!15opaque}{beamericononlineshaded}
+\pgfaliasimage{beamericonbook.!10opaque}{beamericononlineshaded}
+\pgfaliasimage{beamericonbook.!5opaque}{beamericononlineshaded}
+\pgfaliasimage{beamericonbook.!2opaque}{beamericononlineshaded}
+
+%%%%%%%%%%% NRL %%%%%%%%%%%
+
+\newlength{\NRLtitle@TopMargin}\setlength{\NRLtitle@TopMargin}{0.23in}
+\newlength{\NRLtitle@TitleDrop}\setlength{\NRLtitle@TitleDrop}{1in}
+\newlength{\NRLtitle@BaseHeight}\setlength{\NRLtitle@BaseHeight}{0.75in}
+\newlength{\NRLtitle@BotMargin}\setlength{\NRLtitle@BotMargin}{1em}
+\newlength{\NRLtitle@FullWidth}\setlength{\NRLtitle@FullWidth}{\dimexpr(\paperwidth-2\NRLsideMargin)\relax}
+
+%%% Corporate title page %%%
+\def\NRLtitleCorporateFunc%
+{%
+  \NRLfont@CorporateTitleFunc
+  \NRL@makefootlinefalse%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{titlelike}%
+%
+    \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\paperheight]{NRLtitleFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+%
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{1em}%
+      {\hfil\usebeamercolor[fg]{nrlmark}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+%
+    \ifx\NRLlogo@filename\@empty\relax%
+    \else%
+      \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{\NRLtitle@TopMargin}\hspace*{\NRLsideMargin}\includegraphics[width=0.68in]{\NRLlogo@filename}}%
+      \hspace*{-\paperwidth}% backup over the logo
+    \fi%
+%
+    \hspace*{\NRLsideMargin}%
+    \begin{minipage}[b][\paperheight][t]{\NRLtitle@FullWidth}%
+      \vspace*{\NRLtitle@TitleDrop}%
+      \parbox{\textwidth}{\raggedright\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}\\%
+      \ifx\insertsubtitle\@empty\relax%
+      \else%
+        \parbox{\textwidth}{\vspace*{1em}\raggedright\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}\\%
+      \fi%     
+      \vfill%
+      \ifx\NRLdist@insert\@empty\relax%
+      \else%
+        \parbox{\textwidth}{\vspace*{1em}\raggedright\usebeamerfont{distribution}\usebeamercolor[fg]{subtitle}\NRLdist@insert}\vspace{1ex}\\%
+      \fi%     
+%
+      \begin{beamercolorbox}[wd=\paperwidth,ht=\NRLtitle@BaseHeight]{bottombox}%
+        \hspace*{\NRLsideMargin}% now shift text back right to the left margin
+        \parbox[b][\NRLtitle@BaseHeight][b]{\textwidth}{%
+          \raggedright%
+          \usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\strut\\%
+          \vspace*{1ex}%
+          \usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\strut\\%
+          \vspace*{\NRLtitle@BotMargin}%
+        }% end parbox author
+        \hspace*{-\textwidth}% back up over previous parbox
+        \parbox[b][\NRLtitle@BaseHeight][b]{\textwidth}{%
+          \centering%
+          \ifx\NRLcredit@insert\@empty\relax%
+          \else
+            \vspace*{1ex}%
+            {\usebeamercolor[fg]{nrlcredit}\usebeamerfont{nrlcredit}\NRLcredit@insert}\\%
+            \vfill%
+          \fi
+          \usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\strut\\%
+          \ifx\NRLmark@insert\@empty\relax%
+          \else
+            \vspace*{1ex}%
+            {\usebeamercolor[fg]{nrlmark}\usebeamerfont{nrlmark}\NRLmark@insert}\\%
+          \fi
+          \vspace*{\NRLtitle@BotMargin}%
+        }% end parbox date
+        \hspace*{-\textwidth}% back up over previous parbox
+        \parbox[b][\NRLtitle@BaseHeight][b]{\textwidth}{%
+          \raggedleft%
+          \ifx\NRLpatents@insert\@empty\relax%
+          \else%
+            \usebeamerfont{patents}\usebeamercolor[fg]{patents}\NRLpatents@insert\\%
+          \fi%
+          \vspace*{\NRLtitle@BotMargin}%
+        }% end parbox patents
+      \end{beamercolorbox}% author box
+%
+      %\vspace*{\NRLtitle@BotMargin}%
+    \end{minipage}%
+  \end{beamercolorbox}%
+}% end defbeamertemplate
+
+%%% Graphic title page %%%
+\def\NRLtitleGraphicFunc%
+{%
+  \NRLfont@GraphicTitleFunc
+  \NRL@makefootlinefalse%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+    \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{titlelike}%
+%
+    \ifNRLfacets
+        \includegraphics[width=\paperwidth,height=\paperheight]{NRLtitleFacets}%
+        \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+%
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{1em}%
+      {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+%
+      \ifx\NRLlogo@filename\@empty\relax%
+      \else%
+        \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{\NRLtitle@TopMargin}\hspace*{\NRLsideMargin}\includegraphics[width=0.68in]{\NRLlogo@filename}}%
+        \hspace*{-\paperwidth}% backup over the logo
+      \fi%
+%
+      \hspace*{\NRLsideMargin}%
+      \begin{minipage}[b][\paperheight][t]{0.5\NRLtitle@FullWidth}% left-hand column
+        \vspace*{\NRLtitle@TitleDrop}%
+        \parbox{\textwidth}{\raggedright\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}\\%
+        \ifx\insertsubtitle\@empty\relax%
+        \else%
+          \parbox{\textwidth}{\vspace*{1em}\raggedright\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}\\%
+        \fi%     
+        \parbox{\textwidth}{\vspace*{2em}\raggedright\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\strut}\\%
+        \parbox{\textwidth}{\vspace*{1ex}\raggedright\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\strut}\\%
+        \ifx\NRLcredit@insert\@empty\relax%
+        \else
+          \parbox{\textwidth}{\usebeamercolor[fg]{nrlcredit}\usebeamerfont{nrlcredit}\vspace*{1em}\NRLcredit@insert}\\%
+        \fi
+        \vfill%
+        \ifx\NRLdist@insert\@empty\relax%
+        \else%
+          \parbox{\textwidth}{\vspace*{1em}\raggedright\usebeamerfont{distribution}\usebeamercolor[fg]{subtitle}\NRLdist@insert}\vspace{1em}\\%
+        \fi%     
+        \parbox{\textwidth}{\raggedright\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}%
+        \ifx\NRLpatents@insert\@empty\relax%
+        \else%
+          \\\parbox{\textwidth}{\vspace*{1em}\raggedright\usebeamerfont{patents}\usebeamercolor[fg]{patents}\NRLpatents@insert}%
+        \fi%
+        \vspace*{\NRLtitle@BotMargin}%
+      \end{minipage}%
+%
+      \begin{minipage}[b][\paperheight][c]{0.5\NRLtitle@FullWidth}% right-hand column
+        \hfill\inserttitlegraphic\hfill%
+      \end{minipage}%
+%
+      \ifx\NRLmark@insert\@empty\relax%
+      \else
+      \hspace*{-\textwidth}%
+        \begin{minipage}[b][\paperheight][b]{\NRLtitle@FullWidth}%
+          \parbox{\textwidth}{\usebeamercolor[fg]{nrlmark}\usebeamerfont{nrlmark}\centering\NRLmark@insert}%
+          \vspace*{\NRLtitle@BotMargin}%
+        \end{minipage}%
+      \fi
+    \end{beamercolorbox}%
+}% end defbeamertemplate
+
+%%% Classic title page %%%
+\def\NRLtitleClassicFunc%
+{%
+  \NRLfont@ClassicTitleFunc
+  \NRL@makefootlinefalse%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{titlelike}%
+%
+     \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\paperheight]{NRLtitleFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+%
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{1em}%
+      {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+%
+    \ifx\NRLlogo@filename\@empty\relax%
+    \else%
+      \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{\NRLtitle@TopMargin}\hspace*{\NRLsideMargin}\includegraphics[width=0.68in]{\NRLlogo@filename}}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+%
+    \begin{minipage}[b][\paperheight][t]{\paperwidth}%
+      \begin{centering}%
+        \vspace*{\NRLtitle@TitleDrop}%
+        \parbox{\textwidth}{\centering\usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle}\\%
+        \ifx\insertsubtitle\@empty\relax%
+        \else%
+          \parbox{\textwidth}{\vspace*{1em}\centering\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle}\\%
+        \fi%     
+        \parbox{\textwidth}{\vspace*{2em}\centering\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\strut}\\%
+        \parbox{\textwidth}{\vspace*{1ex}\centering\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\strut}\\%
+        \ifx\NRLcredit@insert\@empty\relax%
+        \else
+          \parbox{\textwidth}{\vspace*{1em}\centering\usebeamercolor[fg]{nrlcredit}\usebeamerfont{nrlcredit}\NRLcredit@insert}\\%
+        \fi
+        \vfill%
+        \parbox{\textwidth}{\centering\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate}\\%
+        \ifx\NRLdist@insert\@empty\relax%
+        \else%
+          \parbox{0.9\textwidth}{\vspace*{1em}\raggedright\usebeamerfont{distribution}\usebeamercolor[fg]{subtitle}\NRLdist@insert}\\%
+        \fi%     
+        \ifx\NRLpatents@insert\@empty\relax%
+        \else%
+          \parbox{\textwidth}{\vspace*{1em}\centering\usebeamerfont{patents}\usebeamercolor[fg]{patents}\NRLpatents@insert}\\%
+        \fi%
+        \ifx\NRLmark@insert\@empty\relax%
+        \else%
+          \parbox{\textwidth}{\vspace*{1em}\centering\usebeamerfont{nrlmark}\usebeamercolor[fg]{nrlmark}\NRLmark@insert}\\\strut%
+        \fi%
+        \vspace*{\NRLtitle@BotMargin}%
+      \end{centering}%
+    \end{minipage}%
+%
+  \end{beamercolorbox}%
+}% end defbeamertemplate
+
+% define a function that can be called in mid-presentation to change the kind of title page used for a second talk
+\def\NRLtitleFunc#1{\def\NRLtitle@titlefunc{#1}}%
+
+% bring in the titlepage format set by user options
+\ifx\NRLtitlepage@kind\NRLtitlepage@corporate
+  \NRLtitleFunc{\NRLtitleCorporateFunc}%
+\fi%
+\ifx\NRLtitlepage@kind\NRLtitlepage@graphic
+  \NRLtitleFunc{\NRLtitleGraphicFunc}%
+\fi%
+\ifx\NRLtitlepage@kind\NRLtitlepage@classic
+  \NRLtitleFunc{\NRLtitleClassicFunc}%
+\fi%
+
+% load the chosen titlepage format into beamer
+\defbeamertemplate*{title page}{NRLpresentation}[1][]{\NRLtitle@titlefunc}%
+
+% Part page: NRLpresentation
+\defbeamertemplate*{part page}{NRLpresentation}[1][]%
+{%
+  \NRL@makefootlinefalse%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{titlelike}%
+    %
+    \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\paperheight]{NRLtitleFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+    %
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+      \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{1em}%
+        {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+    %
+    \ifx\NRLlogo@filename\@empty\relax%
+    \else%
+      \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{\NRLtitle@TopMargin}\hspace*{\NRLsideMargin}\includegraphics[width=0.68in]{\NRLlogo@filename}}%
+      \hspace*{-\paperwidth}% backup over the logo
+    \fi%
+    %
+    \begin{minipage}[b][\paperheight][c]{\paperwidth}%
+      \begin{centering}
+        %{\usebeamerfont{part name}\usebeamercolor[fg]{part name}\partname~\insertpartnumber}%
+        {\usebeamerfont{part name}\usebeamercolor[fg]{part name}PART~\Roman{part}}%
+        \vskip1em\par%
+        \hspace*{\NRLsideMargin}%
+        \begin{beamercolorbox}[wd=\NRLtitle@FullWidth,sep=12pt,center,#1,rounded=true]{part title}%
+          \usebeamerfont{part title}\insertpart%
+        \end{beamercolorbox}%
+      \end{centering}%
+    \end{minipage}%
+    \hspace*{-\paperwidth}% backup over the part name
+    %
+    \ifx\NRLmark@insert\@empty\relax%
+    \else%
+      %\par\usebeamerfont{nrlmark}\usebeamercolor[fg]{nrlmark}\NRLmark@insert%
+      \parbox[b][\paperheight][b]{\paperwidth}{%
+        {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil\par\vspace*{1em}}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi%
+    %
+  \end{beamercolorbox}%
+}% end defbeamertemplate part
+
+% Section page: NRLpresentation
+\defbeamertemplate*{section page}{NRLpresentation}[1][]%
+{%
+  \NRL@makefootlinefalse%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{titlelike}%
+    %
+    \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\paperheight]{NRLtitleFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+    %
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{1em}%
+      {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+    %
+    \ifx\NRLlogo@filename\@empty\relax%
+    \else%
+      \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{\NRLtitle@TopMargin}\hspace*{\NRLsideMargin}\includegraphics[width=0.68in]{\NRLlogo@filename}}%
+      \hspace*{-\paperwidth}% backup over the logo
+    \fi%
+    %
+    \begin{minipage}[b][\paperheight][c]{\paperwidth}%
+      \begin{centering}
+        %{\usebeamerfont{section name}\usebeamercolor[fg]{section name}\sectionname~\insertsectionnumber}%
+        %{\usebeamerfont{section name}\usebeamercolor[fg]{section name}Section~\arabic{section}}%
+        %\vskip1em\par%
+        \hspace*{\NRLsideMargin}%
+        \begin{beamercolorbox}[wd=\NRLtitle@FullWidth,sep=12pt,center,#1,rounded=true]{section title}%
+          \usebeamerfont{section title}\insertsection%
+        \end{beamercolorbox}%
+      \end{centering}%
+    \end{minipage}%
+    \hspace*{-\paperwidth}% backup over the part name
+    %
+    \ifx\NRLmark@insert\@empty\relax%
+    \else%
+      %\par\usebeamerfont{nrlmark}\usebeamercolor[fg]{nrlmark}\NRLmark@insert%
+      \parbox[b][\paperheight][b]{\paperwidth}{%
+        {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil\par\vspace*{1em}}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi%
+    %
+  \end{beamercolorbox}%
+}% end defbeamertemplate section
+
+% Subsection page: NRLpresentation
+\defbeamertemplate*{subsection page}{NRLpresentation}[1][]%
+{%
+  \NRL@makefootlinefalse%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\paperheight]{titlelike}%
+    %
+    \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\paperheight]{NRLtitleFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+    %
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{1em}%
+      {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+    %
+    \ifx\NRLlogo@filename\@empty\relax%
+    \else%
+      \parbox[b][\paperheight][t]{\paperwidth}{\vspace*{\NRLtitle@TopMargin}\hspace*{\NRLsideMargin}\includegraphics[width=0.68in]{\NRLlogo@filename}}%
+      \hspace*{-\paperwidth}% backup over the logo
+    \fi%
+    %
+    \begin{minipage}[b][\paperheight][c]{\paperwidth}%
+      \begin{centering}
+        %{\usebeamerfont{subsection name}\usebeamercolor[fg]{subsection name}\subsectionname~\insertsubsectionnumber}%
+        %{\usebeamerfont{subsection name}\usebeamercolor[fg]{subsection name}subsection~\arabic{section}.\arabic{subsection}}%
+        %\vskip1em\par%
+        \hspace*{\NRLsideMargin}%
+        \begin{beamercolorbox}[wd=\NRLtitle@FullWidth,sep=12pt,center,#1,rounded=true]{subsection title}%
+          \usebeamerfont{subsection title}\insertsubsection%
+        \end{beamercolorbox}%
+      \end{centering}%
+    \end{minipage}%
+    \hspace*{-\paperwidth}% backup over the part name
+    %
+    \ifx\NRLmark@insert\@empty\relax%
+    \else%
+      %\par\usebeamerfont{nrlmark}\usebeamercolor[fg]{nrlmark}\NRLmark@insert%
+      \parbox[b][\paperheight][b]{\paperwidth}{%
+        {\hfil\usebeamercolor[fg]{title}\usebeamerfont{nrlmark}\NRLmark@insert}\hfil\par\vspace*{1em}}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi%
+    %
+  \end{beamercolorbox}%
+}% end defbeamertemplate subsection
+
+%%%%%%%%%%% NRL %%%%%%%%%%%
+
+
+
+
+%
+% Table of contents
+%
+
+% makes LaTeX crash
+%\defbeamertemplateparent{sections/subsections in toc}{section in toc,subsection in toc,subsubsection in toc}
+%{}
+
+%\defbeamertemplateparent{sections/subsections in toc shaded}{section in toc shaded,subsection in toc shaded,subsubsection in toc shaded}[1][20]
+%{[#1]}
+
+
+
+
+% (sub-)section in toc: NRLpresentation
+
+\defbeamertemplate*{section in toc}{NRLpresentation}
+{\inserttocsection\par}
+
+\defbeamertemplate*{subsection in toc}{NRLpresentation}
+{\leavevmode\leftskip=1.5em\inserttocsubsection\par}
+
+\defbeamertemplate*{subsubsection in toc}{NRLpresentation}
+{\leavevmode\normalsize\usebeamerfont{subsection in toc}\leftskip=3em%
+  \usebeamerfont{subsubsection in toc}\inserttocsubsubsection\par}
+
+
+% (sub-)section in toc shaded, NRLpresentation
+
+\defbeamertemplate*{section in toc shaded}{NRLpresentation}[1][20]
+{\begin{colormixin}{#1!parent.bg}\usebeamertemplate{section in toc}\end{colormixin}\unskip}
+
+\defbeamertemplate*{subsection in toc shaded}{NRLpresentation}[1][20]
+{\begin{colormixin}{#1!parent.bg}\usebeamertemplate{subsection in toc}\end{colormixin}\unskip}
+
+\defbeamertemplate*{subsubsection in toc shaded}{NRLpresentation}[1][20]
+{\begin{colormixin}{#1!parent.bg}\usebeamertemplate{subsubsection in toc}\end{colormixin}\unskip}
+
+
+
+
+
+%
+% Item bullets
+%
+
+% makes LaTeX crash
+%\defbeamertemplateparent{items}{itemize items,enumerate items}
+%{}
+
+
+% Itemize items
+
+% makes LaTeX crash
+%\defbeamertemplateparent{itemize items}{itemize item,itemize subitem,itemize subsubitem}
+%{}
+
+
+%%%%%%%%%%% NRL %%%%%%%%%%%
+
+% Itemize items, NRLpresentation
+% itemize bullets may be any LaTeX text character or math symbol
+% see Scott Pakin, ``The Comprehensive LaTeX Symbol List''
+%
+% some AMS symbol possibilities
+% blacktriangleright, triangleright, vartriangleright
+% bigstar, star, bullet, 
+% bigcirc, circ, cdot, ominus, oplus, otimes, circledash
+% circledast, circledcirc, odot
+% boxcircle, boxdot, boxminus, boxplus, boxtimes, boxempty
+% Rightarrow, rightarrow
+
+% dotdash - NRLdefault
+\defbeamertemplate*{itemize item}{dotdash}{\footnotesize\raise0.8pt\hbox{\donotcoloroutermaths$\bullet$}}
+\defbeamertemplate*{itemize subitem}{dotdash}{\footnotesize\raise0.4pt\hbox{\donotcoloroutermaths{--}}}
+\defbeamertemplate*{itemize subsubitem}{dotdash}{\footnotesize\raise0.1pt\hbox{\donotcoloroutermaths$\bullet$}}
+
+% triangles - beamer default
+\defbeamertemplate*{itemize item}{triangles}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\defbeamertemplate*{itemize subitem}{triangles}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\defbeamertemplate*{itemize subsubitem}{triangles}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+
+% mixed - progression of squares, triangles, balls
+\defbeamertemplate*{itemize item}{mixed}{\hbox{\donotcoloroutermaths{\rule[1.6pt]{3pt}{3pt}}}}
+\defbeamertemplate*{itemize subitem}{mixed}{\tiny\raise1.3pt\hbox{\donotcoloroutermaths$\blacktriangleright$}}
+\defbeamertemplate*{itemize subsubitem}{mixed}{\scriptsize\raise0.5pt\hbox{\donotcoloroutermaths$\bullet$}}
+
+% balls
+\defbeamertemplate*{itemize item}{balls}{\scriptsize\raise1.25pt\hbox{\donotcoloroutermaths$\bullet$}}
+\defbeamertemplate*{itemize subitem}{balls}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\bullet$}}
+\defbeamertemplate*{itemize subsubitem}{balls}{\tiny\raise1.5pt\hbox{\donotcoloroutermaths$\bullet$}}
+
+% circles - open circles with stars inside
+\defbeamertemplate*{itemize item}{circles}{\scriptsize\raise1.2pt\hbox{\donotcoloroutermaths$\circledast$}}
+\defbeamertemplate*{itemize subitem}{circles}{\scriptsize\raise0.8pt\hbox{\donotcoloroutermaths$\circledcirc$}}
+\defbeamertemplate*{itemize subsubitem}{circles}{\scriptsize\raise0.6pt\hbox{\donotcoloroutermaths$\odot$}}
+
+% squares
+% use LaTeX rule to make a solid black rectangle of any size
+\defbeamertemplate*{itemize item}{squares}{\hbox{\donotcoloroutermaths{\rule[1.0pt]{4pt}{4pt}}}}
+\defbeamertemplate*{itemize subitem}{squares}{\hbox{\donotcoloroutermaths{\rule[1.2pt]{3pt}{3pt}}}}
+\defbeamertemplate*{itemize subsubitem}{squares}{\hbox{\donotcoloroutermaths{\rule[1.4pt]{2pt}{2pt}}}}
+
+% dashes
+\defbeamertemplate*{itemize item}{dashes}{\footnotesize\raise0.8pt\hbox{\donotcoloroutermaths{---}}}
+\defbeamertemplate*{itemize subitem}{dashes}{\footnotesize\raise0.4pt\hbox{\donotcoloroutermaths{--}}}
+\defbeamertemplate*{itemize subsubitem}{dashes}{\footnotesize\raise0.1pt\hbox{\donotcoloroutermaths{-}}}
+
+%%%%%%%%%%%%%%%
+
+% dotdash - NRLdefault
+\def\NRLbulletsDotdash{
+  \setbeamertemplate{itemize item}[dotdash]
+  \setbeamertemplate{itemize subitem}[dotdash]
+  \setbeamertemplate{itemize subsubitem}[dotdash]
+}
+
+% triangles - beamer default
+\def\NRLbulletsTriangles{
+  \setbeamertemplate{itemize item}[triangles]
+  \setbeamertemplate{itemize subitem}[triangles]
+  \setbeamertemplate{itemize subsubitem}[triangles]
+}
+
+% mixed - progression of squares, triangles, balls
+\def\NRLbulletsMixed{
+  \setbeamertemplate{itemize item}[mixed]
+  \setbeamertemplate{itemize subitem}[mixed]
+  \setbeamertemplate{itemize subsubitem}[mixed]
+}
+
+% balls
+\def\NRLbulletsBalls{
+  \setbeamertemplate{itemize item}[balls]
+  \setbeamertemplate{itemize subitem}[balls]
+  \setbeamertemplate{itemize subsubitem}[balls]
+}
+
+% circles - open circles with stars inside
+\def\NRLbulletsCircles{
+  \setbeamertemplate{itemize item}[circles]
+  \setbeamertemplate{itemize subitem}[circles]
+  \setbeamertemplate{itemize subsubitem}[circles]
+}
+
+% solid squares
+% use LaTeX rule to make a solid black rectangle of any size
+\def\NRLbulletsSquares{
+  \setbeamertemplate{itemize item}[squares]
+  \setbeamertemplate{itemize subitem}[squares]
+  \setbeamertemplate{itemize subsubitem}[squares]
+}
+
+% dashes
+\def\NRLbulletsDashes{
+  \setbeamertemplate{itemize item}[dashes]
+  \setbeamertemplate{itemize subitem}[dashes]
+  \setbeamertemplate{itemize subsubitem}[dashes]
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% load the chosen bullets
+\ifx\NRLbullets@kind\NRLbullets@dotdash
+  \NRLbulletsDotdash
+\fi
+\ifx\NRLbullets@kind\NRLbullets@triangles
+  \NRLbulletsTriangles
+\fi
+\ifx\NRLbullets@kind\NRLbullets@mixed
+  \NRLbulletsMixed
+\fi
+\ifx\NRLbullets@kind\NRLbullets@balls
+  \NRLbulletsBalls
+\fi
+\ifx\NRLbullets@kind\NRLbullets@circles
+  \NRLbulletsCircles
+\fi
+\ifx\NRLbullets@kind\NRLbullets@squares
+  \NRLbulletsSquares
+\fi
+\ifx\NRLbullets@kind\NRLbullets@dashes
+  \NRLbulletsDashes
+\fi
+
+%%%%%%%%%%% NRL %%%%%%%%%%%
+
+
+% Enumerate items, NRLpresentation
+
+% makes LaTeX crash
+%\defbeamertemplateparent{enumerate items}{enumerate item,enumerate subitem,enumerate subsubitem,enumerate mini}
+%{}
+
+\defbeamertemplate*{enumerate item}{NRLpresentation}{\insertenumlabel.}
+\defbeamertemplate*{enumerate subitem}{NRLpresentation}{\insertenumlabel.\insertsubenumlabel}
+\defbeamertemplate*{enumerate subsubitem}{NRLpresentation}{\insertenumlabel.\insertsubenumlabel.\insertsubsubenumlabel}
+\defbeamertemplate*{enumerate mini template}{NRLpresentation}{\insertenumlabel}
+
+
+% Description item width
+
+\defbeamertemplate*{description item}{NRLpresentation}{\insertdescriptionitem}
+
+
+
+% Itemize/Enumerate body
+
+\defbeamertemplate*{itemize/enumerate body begin}{NRLpresentation}{}
+\defbeamertemplate*{itemize/enumerate body end}{NRLpresentation}{}
+
+\defbeamertemplate*{itemize/enumerate subbody begin}{NRLpresentation}{}
+\defbeamertemplate*{itemize/enumerate subbody end}{NRLpresentation}{}
+
+\defbeamertemplate*{itemize/enumerate subsubbody begin}{NRLpresentation}{}
+\defbeamertemplate*{itemize/enumerate subsubbody end}{NRLpresentation}{}
+
+
+
+% Alerted text
+
+\defbeamertemplate*{alerted text begin}{NRLpresentation}{\setbeamercolor{local structure}{parent=alerted text}}
+
+
+
+% Structured text
+
+% empty NRLpresentations
+
+
+% Bibliography items
+
+\defbeamertemplate*{bibliography item}{NRLpresentation}
+{\lower3.5pt\hbox{\hskip2pt\pgfuseimage{beamericonarticle}\hskip1pt}}
+
+\defbeamertemplate*{bibliography entry article}{NRLpresentation}{}
+\defbeamertemplate*{bibliography entry title}{NRLpresentation}{\par}
+\defbeamertemplate*{bibliography entry location}{NRLpresentation}{\par}
+\defbeamertemplate*{bibliography entry note}{NRLpresentation}{\par}
+
+
+% Buttons
+
+\newdimen\beamer@dima%
+\newdimen\beamer@dimb%
+
+\defbeamertemplate*{button}{NRLpresentation}
+{%
+  \setbox\beamer@tempbox=\hbox{{\insertbuttontext}}%
+  \ht\beamer@tempbox=6pt%
+  \dp\beamer@tempbox=0pt%
+  \setbox\beamer@tempbox=\vbox{\box\beamer@tempbox\vskip2pt}%
+  \beamer@tempdim=\wd\beamer@tempbox%
+  \beamer@dima=\beamer@tempdim\advance\beamer@dima by2.2pt
+  \beamer@dimb=\beamer@tempdim\advance\beamer@dimb by4pt
+  \begin{pgfpicture}{-4pt}{0pt}{\the\beamer@tempdim}{8pt}
+    \color{bg}
+    \pgfsetlinewidth{0.8pt}
+    \pgfpathqmoveto{0pt}{0pt}
+    \pgfpathqcurveto{-2.2pt}{0pt}{-4pt}{1.8pt}{-4pt}{4pt}
+    \pgfpathqcurveto{-4pt}{6.2pt}{-2.2pt}{8pt}{0pt}{8pt}
+    \pgfpathlineto{\pgfpoint{\the\beamer@tempdim}{8pt}}
+    \pgfpathcurveto%
+    {\pgfpoint{\the\beamer@dima}{8pt}}%
+    {\pgfpoint{\the\beamer@dimb}{6.2pt}}%
+    {\pgfpoint{\the\beamer@dimb}{4pt}}
+    \pgfpathcurveto%
+    {\pgfpoint{\the\beamer@dimb}{1.8pt}}%
+    {\pgfpoint{\the\beamer@dima}{0pt}}%
+    {\pgfpoint{\the\beamer@tempdim}{0pt}}
+    \pgfpathclose
+    \pgfusepathqfill
+    \colorlet{bg}{parent.bg}
+    \usebeamercolor[fg]{button border}
+    \pgfpathqmoveto{0pt}{0pt}
+    \pgfpathqcurveto{-2.2pt}{0pt}{-4pt}{1.8pt}{-4pt}{4pt}
+    \pgfpathqcurveto{-4pt}{6.2pt}{-2.2pt}{8pt}{0pt}{8pt}
+    \pgfpathlineto{\pgfpoint{\the\beamer@tempdim}{8pt}}
+    \pgfpathcurveto%
+    {\pgfpoint{\the\beamer@dima}{8pt}}%
+    {\pgfpoint{\the\beamer@dimb}{6.2pt}}%
+    {\pgfpoint{\the\beamer@dimb}{4pt}}
+    \pgfpathcurveto%
+    {\pgfpoint{\the\beamer@dimb}{1.8pt}}%
+    {\pgfpoint{\the\beamer@dima}{0pt}}%
+    {\pgfpoint{\the\beamer@tempdim}{0pt}}
+    \pgfpathclose
+    \pgfusepathqstroke
+  \end{pgfpicture}%
+  \hskip-\beamer@tempdim%
+  \box\beamer@tempbox%
+  \kern4pt%
+}
+
+
+% Abstract
+
+\defbeamertemplate*{abstract title}{NRLpresentation}
+{%
+  \begin{center}%
+    \abstractname
+  \end{center}%
+}
+
+\defbeamertemplate*{abstract begin}{NRLpresentation}
+{\beamercolorbox[vmode]{abstract}\leftskip2em\rightskip2em plus 1fill\usebeamerfont*{abstract}}
+
+\defbeamertemplate*{abstract end}{NRLpresentation}
+{\medskip\endbeamercolorbox}
+
+
+% Verse
+
+\defbeamertemplate*{verse begin}{NRLpresentation}
+{\beamercolorbox[vmode]{verse}}
+
+\defbeamertemplate*{verse end}{NRLpresentation}
+{\endbeamercolorbox}
+
+
+% Quotation
+
+\defbeamertemplate*{quotation begin}{NRLpresentation}
+{\beamercolorbox[vmode]{quotation}}
+
+\defbeamertemplate*{quotation end}{NRLpresentation}
+{\endbeamercolorbox}
+
+
+% Quote
+
+\defbeamertemplate*{quote begin}{NRLpresentation}
+{\beamercolorbox[vmode]{quote}}
+
+\defbeamertemplate*{quote end}{NRLpresentation}
+{\endbeamercolorbox}
+
+
+% Footnotes
+
+\defbeamertemplate*{footnote}{NRLpresentation}
+{
+  \parindent 1em\noindent%
+  \raggedright
+  \hbox to 1.8em{\hfil\insertfootnotemark}\insertfootnotetext\par%
+}
+
+
+% Captions
+
+\defbeamertemplate*{caption}{NRLpresentation}
+{%
+  \raggedright
+  {%
+    \usebeamercolor[fg]{caption name}%
+    \usebeamerfont*{caption name}%
+    \insertcaptionname
+    \usebeamertemplate{caption label separator}%
+  }%
+  \insertcaption\par
+}
+\defbeamertemplate*{caption label separator}{NRLpresentation}{ : }
+
+% Blocks
+
+%\defbeamertemplateparent{blocks}{block begin,block end,%
+%  block alerted begin,block alerted end,%
+%  block example begin,block example end}
+%{}
+
+\defbeamertemplate*{block begin}{NRLpresentation}
+{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=.75ex]{block title}
+    \usebeamerfont*{block title}\insertblocktitle%
+  \end{beamercolorbox}%
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title}
+  {}
+  {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+\defbeamertemplate*{block end}{NRLpresentation}  
+{\end{beamercolorbox}\vskip\smallskipamount}
+
+\defbeamertemplate*{block alerted begin}{NRLpresentation}
+{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=.75ex]{block title alerted}
+    \usebeamerfont*{block title alerted}\insertblocktitle%
+  \end{beamercolorbox}%
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title alerted}
+  {}
+  {\ifbeamercolorempty[bg]{block body alerted}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body alerted}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body alerted}%
+    \ifbeamercolorempty[bg]{block body alerted}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+
+\defbeamertemplate*{block alerted end}{NRLpresentation}
+{\end{beamercolorbox}\vskip\smallskipamount}
+
+
+\defbeamertemplate*{block example begin}{NRLpresentation}
+{
+  \par\vskip\medskipamount%
+  \begin{beamercolorbox}[colsep*=.75ex]{block title example}
+    \usebeamerfont*{block title example}\insertblocktitle%
+  \end{beamercolorbox}%
+  {\parskip0pt\par}%
+  \ifbeamercolorempty[bg]{block title example}
+  {}
+  {\ifbeamercolorempty[bg]{block body example}{}{\nointerlineskip\vskip-0.5pt}}%
+  \usebeamerfont{block body example}%
+  \begin{beamercolorbox}[colsep*=.75ex,vmode]{block body example}%
+    \ifbeamercolorempty[bg]{block body example}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+}
+\defbeamertemplate*{block example end}{NRLpresentation}
+{\end{beamercolorbox}\vskip\smallskipamount}
+
+
+
+
+% Theorems
+
+%\defbeamertemplateparent{theorems}{theorem begin,theorem end}
+%{}
+
+\defbeamertemplate*{theorem begin}{NRLpresentation}
+{%
+  \begin{\inserttheoremblockenv}
+  {%
+    \inserttheoremname
+    \ifx\inserttheoremaddition\@empty\else\ (\inserttheoremaddition)\fi%
+  }%
+}
+
+\defbeamertemplate*{theorem end}{NRLpresentation}
+{\end{\inserttheoremblockenv}}
+
+
+% Proofs
+\defbeamertemplate*{proof begin}{NRLpresentation}
+{\begin{block}{\insertproofname}}
+
+\defbeamertemplate*{proof end}{NRLpresentation}
+{\end{block}}
+
+\defbeamertemplate*{qed symbol}{NRLpresentation}
+{\openbox}
+
+
+
+
+\mode
+<all>

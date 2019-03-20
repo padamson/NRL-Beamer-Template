@@ -1,0 +1,354 @@
+% Copyright 2007 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+%% Adapted from:
+\ProvidesPackageRCS $Header: /Users/joseph/Documents/LaTeX/beamer/base/themes/outer/beamerouterthemeNRLpresentation.sty,v 1686da3db3c9 2012/12/19 12:35:18 nicolas $
+
+% Modified by Peter Mignerey (pcm) code 7167, July 2016 -- January 2017
+
+% don't mess with modes
+\mode<presentation>
+
+% Mini frames
+
+%\defbeamertemplateparent{mini frames}
+%  {mini frame,mini frame in current section,mini frame in current subsection}
+%{}
+
+\defbeamertemplate*{mini frame}{NRLpresentation}
+{%
+  \begin{pgfpicture}{0pt}{0pt}{0.1cm}{0.1cm}
+    \pgfpathcircle{\pgfpoint{0.05cm}{0.05cm}}{0.05cm}
+    \pgfusepath{fill,stroke}
+  \end{pgfpicture}%
+}
+[action]
+{
+  \setbeamersize{mini frame size=.14cm,mini frame offset=.03cm}
+}
+
+\defbeamertemplate*{mini frame in current section}{NRLpresentation}
+{%
+  \begin{pgfpicture}{0pt}{0pt}{0.1cm}{0.1cm}
+    \pgfpathcircle{\pgfpoint{0.05cm}{0.05cm}}{0.05cm}
+    \pgfusepath{stroke}
+  \end{pgfpicture}%
+}
+
+\defbeamertemplate*{mini frame in current subsection}{NRLpresentation}
+{%
+  \begin{pgfpicture}{0pt}{0pt}{0.1cm}{0.1cm}
+    \pgfpathcircle{\pgfpoint{0.05cm}{0.05cm}}{0.05cm}
+    \pgfusepath{stroke}
+  \end{pgfpicture}%
+}
+
+\defbeamertemplate*{mini frame in other section}{NRLpresentation}[1][50]
+{\color{fg!#1!bg}\usebeamertemplate{mini frame in current section}}
+\defbeamertemplate*{mini frame in other subsection}{NRLpresentation}[1][50]
+{\color{fg!#1!bg}\usebeamertemplate{mini frame in current subsection}}
+
+
+% Navigation symbols
+
+\defbeamertemplate*{navigation symbols}{NRLpresentation}
+{%
+  \hbox{%
+    \hbox{\insertslidenavigationsymbol}
+    \hbox{\insertframenavigationsymbol}
+    \hbox{\insertsubsectionnavigationsymbol}
+    \hbox{\insertsectionnavigationsymbol}
+    \hbox{\insertdocnavigationsymbol}
+    \hbox{\insertbackfindforwardnavigationsymbol}%
+  }%
+}
+
+% No navigation symbols in handout or trans mode:
+\only<handout| trans>{\setbeamertemplate{navigation symbols}{}}
+
+
+% Section and subsections in head/foot
+
+\defbeamertemplate*{section in head/foot}{NRLpresentation}
+{\insertsectionhead}
+
+\defbeamertemplate*{section in head/foot shaded}{NRLpresentation}[1][50]
+{\color{fg!#1!bg}\usebeamertemplate{section in head/foot}}
+
+\defbeamertemplate*{subsection in head/foot}{NRLpresentation}
+{\insertsubsectionhead}
+
+\defbeamertemplate*{subsection in head/foot shaded}{NRLpresentation}[1][50]
+{\color{fg!#1!bg}\usebeamertemplate{subsection in head/foot}}
+
+\defbeamertemplate*{subsubsection in head/foot}{NRLpresentation}
+{\insertsubsubsectionhead}
+
+\defbeamertemplate*{subsubsection in head/foot shaded}{NRLpresentation}[1][50]
+{\color{fg!#1!bg}\usebeamertemplate{subsubsection in head/foot}}
+
+
+% Headline and footline
+
+\defbeamertemplate*{headline}{NRLpresentation}
+{}
+
+\defbeamertemplate*{footline}{NRLpresentation}{
+  \ifNRL@makefootline
+    \hspace*{\beamer@leftmargin}{U.S. Naval Research Laboratory}%
+    \hfill{\usebeamercolor[fg]{nrlmark in head/foot}\usebeamerfont{nrlmark}\NRLmark@insert}\hfill\inserttitle%
+    \hspace*{1ex}\rule[-0.15\baselineskip]{0.6pt}{\baselineskip}\hspace*{1ex}\insertframenumber\,/\,\inserttotalframenumber%
+    \hspace*{\beamer@rightmargin}\vspace*{1ex}%
+  \fi
+  \NRL@makefootlinetrue% keep it turned on unless explicitly turned off somewhere e.g. titlepage
+}
+
+% background
+
+\defbeamertemplate*{background}{NRLpresentation}
+{}
+
+\defbeamertemplate*{background canvas}{NRLpresentation}
+{%
+  \ifbeamercolorempty[bg]{background canvas}{}{\color{bg}\vrule width\paperwidth height\paperheight}%
+}
+
+
+% Sidebars
+
+\defbeamertemplate*{sidebar left}{NRLpresentation}
+{}%
+% leave the left sidebar empty
+% this works, but it shows up underneath the frame title box - so the logo must go in the pagetitle box.
+%{
+%  \ifNRL@makeleftside
+%      \includegraphics[width=0.121\textwidth]{\NRLlogo@filename}%
+%  \fi
+%  \NRL@makeleftsidetrue% keep it turned on unless explicitly turned off somewhere e.g. titlepage
+%}
+
+% the right sidebar contains the navigation buttons
+\defbeamertemplate*{sidebar right}{NRLpresentation}
+{
+  \ifNRL@makerightside
+    \vfill%
+    \llap{\usebeamertemplate***{navigation symbols}\hskip0.1cm}%
+    \vskip2pt%
+  \fi
+}
+
+\defbeamertemplate*{sidebar canvas left}{NRLpresentation}
+{%
+  \ifbeamercolorempty[bg]{sidebar left}{}
+  {\color{bg}\vrule height\sidebarheight width\beamer@leftsidebar}%
+}
+
+\defbeamertemplate*{sidebar canvas right}{NRLpresentation}
+{%
+  \ifbeamercolorempty[bg]{sidebar right}{}
+  {\color{bg}\vrule height\sidebarheight width\beamer@rightsidebar}%
+}
+
+%%%%%%%%%%% NRL %%%%%%%%%%%
+
+\newlength{\NRLframe@TopMargin}\setlength{\NRLframe@TopMargin}{0.11in}%
+\newlength{\NRLframe@Height}\setlength{\NRLframe@Height}{0.62in}%
+
+\newlength{\NRLframe@QuadLength}\setlength{\NRLframe@QuadLength}{1em}%
+\def\NRLquad{\hskip\NRLframe@QuadLength}%
+
+\newlength{\NRLframe@LogoWidth}\setlength{\NRLframe@LogoWidth}{0.121\textwidth}%
+\newlength{\NRLframe@LogoMargin}\setlength{\NRLframe@LogoMargin}{\dimexpr(\NRLsideMargin+\NRLframe@LogoWidth)\relax}%
+\newlength{\NRLframe@LogoBackup}\setlength{\NRLframe@LogoBackup}{\dimexpr(\NRLframe@LogoMargin+\NRLframe@QuadLength-\paperwidth)\relax}%
+
+\newlength{\NRLframe@ParboxWidth}%
+
+%%% Frame title: NRLpresentation (plain) %%%
+%%%     define corporate title page      %%%
+%\defbeamertemplate*{frametitle plain}{NRLpresentation}%
+\def\NRLframePlainTitleFunc%
+{%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\NRLframe@Height]{frametitle}% insert colored background
+    %
+    \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\NRLframe@Height]{NRLframeFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+%
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\NRLframe@Height][t]{\paperwidth}{\vspace*{1ex}%
+      {\hfil\usebeamercolor[fg]{nrlmark}\usebeamerfont{nrlmark}\NRLmark@insert\hfil}}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+%
+    \ifx\NRLlogo@filename\@empty% insert logo
+      \setlength{\NRLframe@ParboxWidth}{\dimexpr(\textwidth-2.5\NRLframe@QuadLength)\relax}% compute width of text
+      \hspace*{\NRLsideMargin}\NRLquad% set left-side slide-title margin
+    \else%
+      \setlength{\NRLframe@ParboxWidth}{\dimexpr(\textwidth-\NRLframe@LogoMargin-2\NRLframe@QuadLength)\relax}% compute width of text
+      \parbox[b][\NRLframe@Height][t]{\paperwidth}{% put logo in its own box to facilitate positioning
+        \vspace*{\NRLframe@TopMargin}\hspace*{\NRLsideMargin}% position logo
+        \includegraphics[width=\NRLframe@LogoWidth]{\NRLlogo@filename}%
+      }% end parbox
+      \hspace*{\NRLframe@LogoBackup}% backup next to logo
+    \fi%
+    %
+    \parbox[b][\NRLframe@Height][c]{\NRLframe@ParboxWidth}{% vertical centering looks best
+      %\vspace*{\NRLframe@TopMargin}% use if parbox is top aligned
+      %\setlength{\baselineskip}{1.5ex}% test
+      \insertframetitle%
+      \ifx\insertframesubtitle\@empty\relax%
+      %\else{\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\\\insertframesubtitle}\fi% test
+      \else{\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\vspace*{-1ex}\\\insertframesubtitle}\fi%
+    }% end parbox
+  \end{beamercolorbox}%
+}% end defbeamertemplate plain
+
+\newlength{\NRLframe@RuleWidth}%
+
+%%% Frame title: NRLpresentation (underline) %%%
+%%%  an experimental design - not corporate  %%%
+% The logo image must be lowered, LaTeX crashes if the frame title is raised.
+% Trailing percents are needed to squelch unwanted whitespace!
+%\defbeamertemplate*{frametitle underline}{NRLpresentation}%
+\def\NRLframeUnderlineTitleFunc%
+{%
+  \vspace*{-1pt}% fix beamer bug: shift background to top edge
+  \begin{beamercolorbox}[wd=\paperwidth,ht=\NRLframe@Height]{frametitle}%
+    %
+    \ifNRLfacets
+      \includegraphics[width=\paperwidth,height=\NRLframe@Height]{NRLframeFacets}%
+      \hspace*{-\paperwidth}% backup over background graphic
+    \fi%
+%
+    \ifx\NRLmark@insert\@empty\relax%
+    \else
+    \parbox[b][\NRLframe@Height][t]{\paperwidth}{\vspace*{1ex}%
+      {\hfil\usebeamercolor[fg]{nrlmark}\usebeamerfont{nrlmark}\NRLmark@insert\hfil}}%
+      \hspace*{-\paperwidth}% backup over the marking
+    \fi
+%    
+    \ifx\NRLlogo@filename\@empty% check whether a logo is to be drawn
+      % logo missing - make a simple, underlined frame title
+      \setlength{\NRLframe@ParboxWidth}{\dimexpr(\textwidth-2\NRLframe@QuadLength)\relax}%
+      \hspace*{\NRLsideMargin}\NRLquad%
+      \parbox[b][\NRLframe@Height][t]{\NRLframe@ParboxWidth}{%
+        \vspace*{\NRLframe@TopMargin}%
+        \insertframetitle%
+        \ifx\insertframesubtitle\@empty\relax% no subtitle - skip
+        \else{\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\vspace*{-1ex}\\\insertframesubtitle}\fi% insert subtitle if any
+        \vspace*{-1.5ex}\\%
+        {\usebeamercolor[fg]{framesubtitle}\rule{\NRLframe@ParboxWidth}{2pt}}%\\% draw underline
+      }% end parbox
+    \else%
+      % logo present
+      \setlength{\NRLframe@RuleWidth}{\dimexpr(\textwidth-\NRLframe@LogoWidth)\relax}%
+      \setlength{\NRLframe@ParboxWidth}{\dimexpr(\NRLframe@RuleWidth-2\NRLframe@QuadLength)\relax}%
+%
+      \parbox[b][\NRLframe@Height][t]{\paperwidth}{%
+        \vspace*{\NRLframe@TopMargin}%
+        \mbox{% Put logo, underline & text on a single horizontal line to prevent LaTeX from changing any spacing.
+          %\textcolor{red}{\rule{\textwidth}{0.1pt}}\hspace*{-\NRLframe@ParboxWidth}% this line was used only to vertically align the text with the logo
+          \hspace*{\NRLframe@LogoMargin}%
+          \rule[-0.069in]{\NRLframe@RuleWidth}{1.0pt}% draw underline with same depression as logo.
+          \hspace*{-\textwidth}% back up over the underline
+          \raisebox{-0.069in}{\includegraphics[width=\NRLframe@LogoWidth]{\NRLlogo@filename}}% insert a lowered logo
+          \NRLquad\parbox[b]{\NRLframe@ParboxWidth}{\insertframetitle% insert frame title next to the logo
+            \ifx\insertframesubtitle\@empty\relax% no subtitle - skip
+            \else{\usebeamercolor[fg]{framesubtitle}\usebeamerfont{framesubtitle}\vspace*{-1ex}\\\insertframesubtitle}% insert subtitle if any
+            \fi
+          }% end parbox
+        }% end mbox
+      }% end parbox
+    \fi% end if logo
+  \end{beamercolorbox}%
+}% end defbeamertemplate underline
+
+% define a function that can be called in mid-presentation to change the kind of frame header used for a second talk
+\def\NRLframeFunc#1{\def\NRLframe@titlefunc{#1}}%
+
+% bring in the frametitle format set by user options
+\ifNRLunderline
+  \NRLframeFunc{\NRLframeUnderlineTitleFunc}%
+\else
+  \NRLframeFunc{\NRLframePlainTitleFunc}%
+\fi
+
+% load the chosen frametitle format into beamer
+\defbeamertemplate*{frametitle}{NRLpresentation}{\NRLframe@titlefunc}%
+
+%%%%%%%%%%% NRL %%%%%%%%%%%
+
+
+\def\beamer@fteright{\vskip0.35cm\advance\leftskip by 1.7cm\advance\rightskip by1.7cm}
+
+% Frame title continuations, NRLpresentation
+
+\defbeamertemplate*{frametitle continuation}{NRLpresentation}{\insertcontinuationcountroman}
+
+
+
+% Notes
+
+\defbeamertemplate*{note page}{NRLpresentation}
+{%
+  {%
+    \scriptsize
+    \usebeamerfont{note title}\usebeamercolor[fg]{note title}%
+    \ifbeamercolorempty[bg]{note title}{}{%
+      \insertvrule{.25\paperheight}{note title.bg}%
+      \vskip-.25\paperheight%
+      \nointerlineskip%
+    }%
+    \vbox{
+      \hfill\insertslideintonotes{0.25}\hskip-\Gm@rmargin\hskip0pt%
+      \vskip-0.25\paperheight%
+      \nointerlineskip
+      \begin{pgfpicture}{0cm}{0cm}{0cm}{0cm}
+        \begin{pgflowlevelscope}{\pgftransformrotate{90}}
+          {\pgftransformshift{\pgfpoint{-2cm}{0.2cm}}%
+          \pgftext[base,left]{\usebeamerfont{note date}\usebeamercolor[fg]{note date}\the\year-\ifnum\month<10\relax0\fi\the\month-\ifnum\day<10\relax0\fi\the\day}}
+        \end{pgflowlevelscope}
+      \end{pgfpicture}}
+    \nointerlineskip
+    \vbox to .25\paperheight{\vskip0.5em
+      \hbox{\insertshorttitle[width=8cm]}%
+      \setbox\beamer@tempbox=\hbox{\insertsection}%
+      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip4pt\raise3pt\hbox{\vrule
+            width0.4pt height7pt\vrule width 9pt
+            height0.4pt}}\hskip1pt\hbox{\begin{minipage}[t]{7.5cm}\def\breakhere{}\insertsection\end{minipage}}\fi%
+      }%
+      \setbox\beamer@tempbox=\hbox{\insertsubsection}%
+      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip17.4pt\raise3pt\hbox{\vrule
+            width0.4pt height7pt\vrule width 9pt
+            height0.4pt}}\hskip1pt\hbox{\begin{minipage}[t]{7.5cm}\def\breakhere{}\insertsubsection\end{minipage}}\fi%
+      }%
+      \setbox\beamer@tempbox=\hbox{\insertshortframetitle}%
+      \hbox{\ifdim\wd\beamer@tempbox>1pt{\hskip30.8pt\raise3pt\hbox{\vrule
+            width0.4pt height7pt\vrule width 9pt
+            height0.4pt}}\hskip1pt\hbox{\insertshortframetitle[width=7cm]}\fi%
+      }%
+      \vfil}%
+  }%
+  \ifbeamercolorempty[bg]{note page}{}{%
+    \nointerlineskip%
+    \insertvrule{.75\paperheight}{note page.bg}%
+    \vskip-.75\paperheight%
+  }%
+  \vskip.25em
+  \nointerlineskip
+  \insertnote
+}
+
+
+
+\mode
+<all>

@@ -1,0 +1,363 @@
+% Copyright 2007 by Till Tantau
+%
+% This file may be distributed and/or modified
+%
+% 1. under the LaTeX Project Public License and/or
+% 2. under the GNU Public License.
+%
+% See the file doc/licenses/LICENSE for more details.
+
+%% Adapted from:
+\ProvidesPackageRCS $Header: /Users/joseph/Documents/LaTeX/beamer/base/themes/theme/beamerthemeNRLpresentation.sty,v d02a7cf4d8ae 2010/06/17 09:11:41 rivanvx $
+
+% Modified by Peter Mignerey (pcm) code 7167, July 2016 -- January 2017
+
+% don't mess with modes
+\mode<presentation>
+
+% load default typeface
+\usepackage{mathptmx}% for equations
+\usepackage{helvet}% for text
+%\usepackage{arial}% not installed
+
+\RequirePackage{calc}			% enables length computations
+\RequirePackage{varwidth}		% provides a natural-width minipage environment needed by NRLfigure & nrltable
+\RequirePackage{threeparttable}		% enables table notes
+%\RequirePackage{chngcntr}		% enables control over footnote counter resets
+
+% define available style options
+\DeclareOptionBeamer{titlepage}{\def\NRLtitlepage@kind{#1}}% corporate, graphic, classic
+\DeclareOptionBeamer{titlecolor}{\def\NRLtitlecolor@kind{#1}}% facets, blue, white
+\DeclareOptionBeamer{pagecolor}{\def\NRLpagecolor@kind{#1}}% white, blue, navy
+\DeclareOptionBeamer{bullets}{\def\NRLbullets@kind{#1}}% dotdash, triangles, mixed, balls, circles, squares, dashes
+\DeclareOptionBeamer{underline}{\def\NRLunderline@kind{#1}}% false, true % experimental
+\DeclareOptionBeamer{navigation}{\def\NRLnavigation@kind{#1}}% false, true
+
+\ExecuteOptionsBeamer{titlepage=corporate,titlecolor=facets,pagecolor=white,bullets=dotdash,underline=false,navigation=false}% set defaults
+\ProcessOptionsBeamer% set user-specified options
+
+% define TeX and LaTeX stuff
+
+% TeX and LaTeX are *functional* languages.
+% Thus we compare functions as *values*,
+% instead of using variables typical of other languages.
+% Here we make predefined functions that evaluate to known tokens
+% that may be compared with other tokens in logical tests.
+% Such tokens are used to implement switch statements,
+% which are not otherwise in the language.
+
+% For logical comparison with \NRLtitlepage@kind
+% Used to choose the kind of title page to make
+\def\NRLtitlepage@corporate{corporate}% default
+\def\NRLtitlepage@graphic{graphic}
+\def\NRLtitlepage@classic{classic}
+
+% For logical comparison with \NRLtitlecolor@kind
+% Used to choose a predefined set of title-page and slide-title colors for a presentation
+\def\NRLtitlecolor@facets{facets}% default
+\def\NRLtitlecolor@blue{blue}
+\def\NRLtitlecolor@white{white}
+
+% Convert the possible presence of facets into a proper logical
+\newif\ifNRLfacets
+\ifx\NRLtitlecolor@kind\NRLtitlecolor@facets\NRLfacetstrue
+\else\NRLfacetsfalse
+\fi
+
+% For logical comparison with \NRLpagecolor@kind
+% Used to choose a predefined set of slide colors for a presentation
+\def\NRLpagecolor@white{white}% default
+\def\NRLpagecolor@blue{blue}
+\def\NRLpagecolor@navy{navy}
+
+% For logical comparison with \NRLbullets@kind
+% Used to choose a predefined set of slide colors for a presentation
+\def\NRLbullets@dotdash{dotdash}% default
+\def\NRLbullets@triangles{triangles}
+\def\NRLbullets@mixed{mixed}
+\def\NRLbullets@circles{circles}
+\def\NRLbullets@balls{balls}
+\def\NRLbullets@squares{squares}
+\def\NRLbullets@dashes{dashes}
+
+% For logical comparison with \NRLunderline@kind % experimental
+% Used to choose the kind of frame title to make at the top of each slide
+\def\NRLunderline@false{false}% default
+\def\NRLunderline@true{true}
+
+% Convert the possible presence of underline into a proper logical % experimental
+\newif\ifNRLunderline
+\ifx\NRLunderline@kind\NRLunderline@true\NRLunderlinetrue
+\else\NRLunderlinefalse
+\fi
+
+% For logical comparison with \NRLnavigation@kind
+% Used to choose whether the beamer navigation bar is displayed
+\def\NRLnavigation@false{false}% default
+\def\NRLnavigation@true{true}
+
+% NRLlogo is used to set a filename.
+% NRLlogo@filename is used internally to typset the logo.
+% The default logo is set in beamercolorthemeNRLpresentation.sty
+\def\NRLlogo#1{\def\NRLlogo@filename{#1}}
+
+% NRLpatents is used to set a list of patents.
+% NRLpatents@insert is used internally to typset patents on the title page.
+\def\NRLpatents#1{\def\NRLpatents@insert{#1}}
+\NRLpatents{}% set default
+
+% NRL security marking
+\def\NRLmark#1{\def\NRLmark@insert{#1}}%
+\NRLmark{}% set default
+
+% NRL support credit
+\def\NRLcredit#1{\def\NRLcredit@insert{#1}}
+\NRLcredit{}% set default
+
+% NRL distribution statement
+\def\NRLdist#1{\def\NRLdist@insert{#1}}
+\NRLdist{}% set default
+
+% Define length for NRL side margins.
+% This value is used in both inner andn outer themes.
+\newlength{\NRLsideMargin}\setlength{\NRLsideMargin}{0.23in}
+
+% Now set it globally, which can only be done here.
+\setbeamersize{text margin left=\NRLsideMargin, text margin right=\NRLsideMargin}
+
+% Logical tests are needed to exclude the footer & sidebars from the title page.
+% Forcibly make a *global* newif, otherwise if-checks don't work inside the footline or sidebar.
+% Make a logical to control whether a footline is printed.
+\gdef\NRL@makefootlinetrue{\global\let\ifNRL@makefootline\iftrue}
+\gdef\NRL@makefootlinefalse{\global\let\ifNRL@makefootline\iffalse}
+\NRL@makefootlinetrue
+
+%\gdef\NRL@makeheadlinetrue{\global\let\ifNRL@makeheadline\iftrue}
+%\gdef\NRL@makeheadlinefalse{\global\let\ifNRL@makeheadline\iffalse}
+%\NRL@makeheadlinetrue
+
+% Make a logical to control whether the left sidebar is printed. (none is currently defined)
+\gdef\NRL@makeleftsidetrue{\global\let\ifNRL@makeleftside\iftrue}
+\gdef\NRL@makeleftsidefalse{\global\let\ifNRL@makeleftside\iffalse}
+\NRL@makeleftsidefalse
+
+% Make a logical to control whether the right sidebar containing the navigation tools is printed.
+\gdef\NRL@makerightsidetrue{\global\let\ifNRL@makerightside\iftrue}
+\gdef\NRL@makerightsidefalse{\global\let\ifNRL@makerightside\iffalse}
+
+% Convert the navigation tool option into a proper logical.
+\ifx\NRLnavigation@kind\NRLnavigation@false\NRL@makerightsidefalse\fi
+\ifx\NRLnavigation@kind\NRLnavigation@true\NRL@makerightsidetrue\fi
+
+% Declare Beamer theme settings.
+
+% Use roman typeface for math.
+\usefonttheme[onlymath]{serif}
+
+% Choose typeface for titlepage & frametitle.
+\usefonttheme{structurebold}
+%\usefonttheme{structureitalicserif}
+%\usefonttheme{structuresmallcapsserif}
+
+% Load the various parts of the NRL beamer style.
+\usefonttheme{NRLpresentation}
+\usecolortheme{NRLpresentation}
+\useinnertheme{NRLpresentation}% title page defined here
+\useoutertheme{NRLpresentation}% slide title defined here
+
+% Automatically produce frames that contain sections
+\AtBeginPart{\frame{\partpage}}
+\AtBeginSection[]{\frame{\sectionpage}}
+\AtBeginSubsection[]{\frame{\subsectionpage}}
+
+% don't mess with modes
+\mode<all>
+
+
+% these must follow hyperref
+% ease the insertion of security marks
+\def\u{(U)~}
+\def\uf{(U//FOUO)~}
+\def\c{(C)~}
+\def\s{(S)~}
+\def\sn{(S//NF)~}
+
+% set figure and table caption widths
+% note: functions are used instead of newlengths
+% because textwidth must be the correct value at execution time,
+% not the value here at definition which differs.
+\def\nrl@capwidth@min{0.5\textwidth}% minimum caption width
+
+% set default font sizes for the various figure and table elements.
+\def\fig@titlesize{\normalsize}
+\def\fig@capsize{\footnotesize}
+\def\tbl@capsize{\normalsize}
+\def\tbl@itemsize{\normalsize}
+\def\tbl@notesize{\footnotesize}
+
+% font specification for the classification mark
+% The rule adds a little vertical space above and below, and keeps it from crashing on empty figmarks.
+%\def\nrl@figmark@insert{{\fontsize{6pt}{6pt}\bfseries\selectfont\rule[-0.2\baselineskip]{0pt}{1.2\baselineskip}\nrl@figmark\\}}
+\def\nrl@figmark@insert{{\tiny\bfseries\selectfont\rule[-0.2\baselineskip]{0pt}{1.2\baselineskip}\nrl@figmark\\}}
+
+\newlength{\nrl@capwidth}% print width of a caption
+\newlength{\nrl@boxwidth}% actual width of a figure or table
+\newlength{\nrl@figmarkwidth}% width of the classification marking
+\newlength{\nrl@caplength}% length of the users input caption text
+
+\newsavebox{\nrl@box}% a box in which to construct either a figure or table
+\newif\ifdoing@figure \doing@figuretrue
+
+% compute the width of captions used with the new NRLfigure and nrltable environments
+\def\nrl@setcapwidth%
+{%
+  \settowidth{\nrl@boxwidth}{\usebox{\nrl@box}}% actual figure or table width
+  \settowidth{\nrl@figmarkwidth}{\nrl@figmark}% width of classification marking
+  \ifdim\nrl@boxwidth<\nrl@figmarkwidth%
+    \setlength{\nrl@boxwidth}{\nrl@figmarkwidth}% figure or table is narrower than the marking
+  \fi%
+  \ifdim\nrl@boxwidth<\nrl@capwidth@min%
+    \setlength{\nrl@capwidth}{\nrl@capwidth@min}% figure or table is narrower than the minimum caption width
+  \else% full-width figure
+    \ifdoing@figure%
+      \ifx\nrl@figmark\@empty%
+        \setlength{\nrl@capwidth}{\nrl@boxwidth}% caption spanning unboxed figure width
+      \else%
+        % fbox adds extra space around a boxed figure that needs to be accounted for
+        \setlength{\nrl@capwidth}{\nrl@boxwidth+2\fboxrule+2\fboxsep}% caption spanning boxed figure width
+      \fi%
+    \else% doing table
+      \setlength{\nrl@capwidth}{\nrl@boxwidth}% caption spanning unboxed table width
+    \fi%
+  \fi%
+}%
+
+\newenvironment{NRLfigure}[3]%
+{%
+  \def\nrl@figmark{#1}% save classification marking for use in the second part
+  \def\nrl@figtitle{#2}% save figure caption for use in the second part
+  \def\nrl@figcaption{#3}% save figure caption for use in the second part
+  \doing@figuretrue% doing a figure
+  \settowidth{\nrl@caplength}{\nrl@figcaption}% length of the caption
+  \begin{lrbox}{\nrl@box}%
+    \begin{varwidth}{\textwidth}%
+}%
+% user puts figure into a box here
+{%
+    \end{varwidth}%
+  \end{lrbox}%
+  \setlength{\fboxrule}{1pt}% thickness of surrounding box line
+  \setlength{\fboxsep}{1pt}% separation between the box and the innards
+  \nrl@setcapwidth%
+  \begin{center}%
+    \begin{minipage}{\nrl@capwidth}%
+      \ifx\nrl@figtitle\@empty%
+      \else
+        {\centering\fig@titlesize\bf\nrl@figtitle\vspace{2pt}\\}% TITLE
+      \fi
+      \ifx\nrl@figmark\@empty% print figure without a marking
+          {\centering\usebox\nrl@box\\}%
+      \else% print with marking
+        {\centering\fbox{%
+          \begin{minipage}{\nrl@boxwidth}%
+            {\raggedright\nrl@figmark@insert}% TOP MARK
+            {\usebox{\nrl@box}\\}% FIGURE
+                   {\raggedleft\nrl@figmark@insert}% BOTTOM MARK
+          \end{minipage}%
+        }\\}%
+      \fi%
+      \ifx\nrl@figcaption\@empty%
+      \else
+        \vspace{2pt}
+        \hyphenpenalty 10000\exhyphenpenalty 10000% suppress hyphens
+        \ifdim \nrl@caplength<\nrl@capwidth%
+          \parbox{\nrl@capwidth}{\centering\fig@capsize\nrl@figcaption}\\% centered CAPTION
+        \else
+          \parbox{\nrl@capwidth}{\fig@capsize\nrl@figcaption}\\% justified CAPTION
+        \fi
+      \fi
+    \end{minipage}%
+  \end{center}
+}%
+
+\newcounter{tblmrkctr}% a counter for table superscripts
+\newcounter{tblnotctr}% a counter for appended table notes
+
+\newenvironment{NRLtable}[2]%
+{%
+  \def\nrl@figmark{#1}% save classification marking for use in the second part
+  \def\nrl@tblcaption{#2}% save table caption for use in the second part
+  \doing@figurefalse% doing a table
+  \settowidth{\nrl@caplength}{\nrl@tblcaption}% length of the caption
+  \setcounter{tblmrkctr}{0}% initialize table note counter
+  \let\nrl@resetTPTwidth\TPT@nrltablewidth% tell three-part table what width to use
+  \begin{lrbox}{\nrl@box}%
+    \begin{varwidth}{\textwidth}%
+      \begin{threeparttable}%
+}%
+% user puts table into a box here
+{%
+      \end{threeparttable}%
+    \end{varwidth}%
+  \end{lrbox}%
+  \nrl@setcapwidth%
+  \tbl@itemsize%
+  \begin{center}%
+    \begin{minipage}{\nrl@capwidth}%
+      \ifx\nrl@tblcaption\@empty%
+      \else
+      \hyphenpenalty 10000\exhyphenpenalty 10000% suppress hyphens
+        \ifdim \nrl@caplength<\nrl@capwidth%
+          \parbox{\nrl@capwidth}{\centering\tbl@capsize\nrl@tblcaption}\vspace{2pt}\\% CAPTION
+        \else
+          \parbox{\nrl@capwidth}{\tbl@capsize\nrl@tblcaption}\vspace{2pt}\\% CAPTION
+        \fi
+      \fi
+      \ifx\nrl@figmark\@empty% print table without a marking
+          {\centering\usebox\nrl@box\\}%
+      \else% print with marking
+        {\centering%
+          \begin{minipage}{\nrl@boxwidth}%
+            {\raggedright\nrl@figmark@insert}% TOP MARK
+            {\usebox{\nrl@box}\\}% FIGURE
+                   {\raggedleft\nrl@figmark@insert}% BOTTOM MARK
+          \end{minipage}\\}%
+      \fi%
+    \end{minipage}%
+  \end{center}
+}%
+
+% an nrltable always uses the actual table width
+\def\TPT@nrltablewidth
+{
+  \hsize\wd\@tempboxb
+}
+
+% redefine threeparttable's measurement to force centering when the table is too narrow
+\def\TPT@measurement{%
+  \nrl@resetTPTwidth%
+  \xdef\TPT@hsize{\hsize\the\hsize \noexpand\@parboxrestore}\TPT@hsize
+  \ifx\TPT@docapt\@undefined\else
+    \TPT@docapt \vskip.2\baselineskip
+  \fi\par\begin{center}\hspace{0pt}\box\@tempboxb\end{center}% hspace{0pt} is needed for centering to work
+  \ifvmode \prevdepth\z@ \fi
+}
+
+% redefine threeparttable's tnote to make superscripts that point to the notes
+% the terminating percents (%) are needed to suppress spurious blank spaces
+\def\tnote#1{%
+  \def\arg{#1}%
+  \ifcat\arg a%
+    \textsuperscript{\,\arg}
+  \else
+    \stepcounter{tblmrkctr}%
+    \textsuperscript{\,\alph{tblmrkctr}}
+  \fi
+}
+
+% set table notes font size and reset note counter
+\def\TPT@defaults{\tbl@notesize\setcounter{tblmrkctr}{0}\setcounter{tblnotctr}{0}}%
+
+% make a general note function for the bottom of the table
+\def\note#1{\\\hbox{\hspace{-1.2ex}\emph{Note:}~#1}}%
+\def\noteN#1{\\\stepcounter{tblnotctr}\hbox{\hspace{-1.2ex}\emph{Note\,\arabic{tblnotctr}:}~#1}}%
